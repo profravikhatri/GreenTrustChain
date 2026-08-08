@@ -1,0 +1,39 @@
+{
+  "model": {
+    "name": "GreenTrustChain-MTEM",
+    "version": "1.0",
+    "trust_scale_min": 0,
+    "trust_scale_max": 10000
+  },
+
+  "trust_weights": {
+    "historical_reliability": 0.25,
+    "data_consistency": 0.25,
+    "communication_reliability": 0.25,
+    "contextual_trust": 0.25
+  },
+
+  "verification_thresholds": {
+    "critical_max": 4999,
+    "enhanced_min": 5000,
+    "enhanced_max": 7999,
+    "standard_min": 8000
+  },
+
+  "decision_policy": {
+    "critical": "reject",
+    "enhanced": "enhanced_verification",
+    "standard": "standard_verification"
+  },
+
+  "normalization": {
+    "method": "min_max",
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+
+  "reproducibility": {
+    "deterministic": true,
+    "random_seed": 42
+  }
+}

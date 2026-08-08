@@ -1,0 +1,98 @@
+{
+  "experiment": {
+    "name": "GreenTrustChain_Benchmark",
+    "version": "1.0.0",
+    "experiment_id": "GTC-BENCH-001",
+    "description": "Reproducible benchmark of trust-driven and energy-efficient smart-contract execution.",
+    "random_seed": 42
+  },
+
+  "dataset": {
+    "name": "GSCROF_benchmark_95556.csv",
+    "path": "data/raw/GSCROF_benchmark_95556.csv",
+    "expected_records": 95556,
+    "sha256": "REPLACE_WITH_AUDITED_SHA256",
+    "immutable_source": true
+  },
+
+  "trust_model": {
+    "configuration": "config/trust_config.json",
+    "scale_min": 0,
+    "scale_max": 10000,
+    "representation": "uint16_fixed_point",
+    "formula": "T_i = w_H H_i + w_D D_i + w_C C_i + w_X X_i"
+  },
+
+  "models": [
+    {
+      "name": "greentrustchain",
+      "contract": "GreenTrustChain"
+    },
+    {
+      "name": "deterministic",
+      "contract": "DeterministicBaseline"
+    }
+  ],
+
+  "blockchain": {
+    "platform": "Ethereum-compatible EVM",
+    "network": "LOCAL_EXPERIMENTAL_NETWORK",
+    "chain_id": 31337,
+    "rpc_url": "http://127.0.0.1:8545",
+    "consensus": "LOCAL_EVM",
+    "automining": true
+  },
+
+  "compiler": {
+    "solidity_version": "REPLACE_WITH_COMPILED_VERSION",
+    "optimizer_enabled": true,
+    "optimizer_runs": 200
+  },
+
+  "workload": {
+    "source": "data/raw/GSCROF_benchmark_95556.csv",
+    "records": 95556,
+    "replay_order": "row_id_ascending",
+    "duplicate_submission": false,
+    "randomized_order": false
+  },
+
+  "measurement": {
+    "gas": {
+      "source": "transaction_receipt",
+      "unit": "gas"
+    },
+
+    "latency": {
+      "definition": "confirmedAtUnixMs - submittedAtUnixMs",
+      "unit": "milliseconds"
+    },
+
+    "throughput": {
+      "primary_metric": "successful_transactions_per_second",
+      "secondary_metric": "attempted_transactions_per_second"
+    },
+
+    "success": {
+      "receipt_status": "1"
+    }
+  },
+
+  "outputs": {
+    "raw_receipts": "results/raw/canonical_receipts.jsonl",
+    "gas": "results/tables/gas_statistics.csv",
+    "latency": "results/tables/latency_statistics.csv",
+    "throughput": "results/tables/throughput_statistics.csv",
+    "trust": "results/trust/trust_scores.csv"
+  },
+
+  "reproducibility": {
+    "record_dataset_hash": true,
+    "record_contract_address": true,
+    "record_transaction_hash": true,
+    "record_block_number": true,
+    "record_gas_used": true,
+    "record_gas_price": true,
+    "record_experiment_id": true
+  }
+}
